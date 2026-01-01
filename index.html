@@ -129,6 +129,164 @@
             transform: translateY(-1px);
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
+        
+        /* 过期任务样式 */
+        .task-item.overdue {
+            background-color: #FFF1F0;
+            border-left: 4px solid #FF4D4F;
+        }
+        
+        /* 截止日期显示样式 */
+        .deadline-display {
+            font-size: 12px;
+            color: #6b7280;
+            margin-left: 8px;
+        }
+        
+        /* 过期截止日期样式 */
+        .deadline-display.overdue {
+            color: #FF4D4F;
+            font-weight: 500;
+        }
+        
+        /* 拖拽相关样式 */
+        .task-item {
+            cursor: move;
+            user-select: none;
+        }
+        
+        /* 拖拽过程中的任务项样式 */
+        .task-item.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+        
+        /* 拖拽占位符样式 */
+        .task-placeholder {
+            height: 60px;
+            background-color: #F0F9FF;
+            border: 2px dashed #3B82F6;
+            border-radius: 8px;
+            margin: 12px 0;
+        }
+        
+        /* 功能按钮区域样式 */
+        .function-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        /* 导出功能样式 */
+        .export-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        /* 导出选择器样式 */
+        .export-select {
+            padding: 8px 12px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: white;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        
+        /* 导出选择器聚焦效果 */
+        .export-select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* 导出按钮样式 */
+        .export-btn {
+            padding: 8px 16px;
+            background-color: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        /* 导出按钮悬停效果 */
+        .export-btn:hover {
+            background-color: #4f46e5;
+        }
+        
+        /* 统计区域样式 */
+        .stats-area {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+        }
+        
+        /* 统计区域标题样式 */
+        .stats-area h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        /* 统计卡片容器样式 */
+        .stats-cards {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        /* 统计卡片样式 */
+        .stat-card {
+            background-color: #f8fafc;
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* 统计卡片标题样式 */
+        .stat-title {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+        
+        /* 统计卡片数值样式 */
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #3b82f6;
+        }
+        
+        /* 图表区域样式 */
+        .chart-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Canvas样式 */
+        #weeklyChart {
+            max-width: 100%;
+            height: auto;
+        }
 
         /* 任务内容样式 */
         .task-content {
@@ -417,9 +575,22 @@
             transition: border-color 0.2s ease;
         }
 
+        /* 截止日期输入框样式 */
+        .deadline-input {
+            padding: 8px 12px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: white;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        
         /* 选择控件聚焦效果 */
         .category-select:focus,
-        .priority-select:focus {
+        .priority-select:focus,
+        .deadline-input:focus {
             border-color: #3b82f6;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
@@ -505,6 +676,28 @@
         <!-- 页面标题 -->
         <h1>我的待办清单</h1>
 
+        <!-- 统计区域 -->
+        <div class="stats-area">
+            <h2>本周任务统计</h2>
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-title">本周创建任务</div>
+                    <div class="stat-value" id="weeklyCreated">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">本周完成任务</div>
+                    <div class="stat-value" id="weeklyCompleted">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">完成率</div>
+                    <div class="stat-value" id="completionRate">0%</div>
+                </div>
+            </div>
+            <div class="chart-area">
+                <canvas id="weeklyChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+        
         <!-- 搜索区域 -->
         <div class="search-area">
             <input 
@@ -536,7 +729,7 @@
                 >
             </div>
             
-            <!-- 分类和优先级选择 -->
+            <!-- 分类、优先级和截止日期选择 -->
             <div class="task-options">
                 <div class="option-group">
                     <label for="categorySelect">分类：</label>
@@ -556,6 +749,12 @@
                     </select>
                 </div>
                 
+                <div class="option-group">
+                    <label for="deadlineDate">截止日期：</label>
+                    <input type="date" id="deadlineDate" class="deadline-input">
+                    <input type="time" id="deadlineTime" class="deadline-input">
+                </div>
+                
                 <button type="button" class="add-btn">添加</button>
             </div>
             
@@ -565,10 +764,25 @@
         <!-- 任务列表区域 -->
         <div class="task-list"></div>
         
-        <!-- 清空已完成任务按钮 -->
-        <div class="clear-completed">
-            <button type="button" class="clear-btn">清空已完成</button>
-        </div>
+        <!-- 功能按钮区域 -->
+            <div class="function-buttons">
+                <!-- 导出功能 -->
+                <div class="option-group export-group">
+                    <label for="exportFormat">导出格式：</label>
+                    <select id="exportFormat" class="export-select">
+                        <option value="csv">CSV</option>
+                        <option value="excel">Excel</option>
+                    </select>
+                    <button type="button" class="export-btn">导出任务</button>
+                    <!-- 导出进度提示 -->
+                    <div class="export-progress" id="exportProgress" style="display: none; margin-left: 10px; font-size: 14px; color: #6b7280;"></div>
+                </div>
+                
+                <!-- 清空已完成任务按钮 -->
+                <div class="clear-completed">
+                    <button type="button" class="clear-btn">清空已完成</button>
+                </div>
+            </div>
     </div>
 
     <script>
@@ -585,6 +799,11 @@
             const filterBtns = document.querySelectorAll('.filter-btn'); // 分类筛选按钮
             const categorySelect = document.getElementById('categorySelect'); // 分类选择器
             const prioritySelect = document.getElementById('prioritySelect'); // 优先级选择器
+            const deadlineDate = document.getElementById('deadlineDate'); // 截止日期输入框
+            const deadlineTime = document.getElementById('deadlineTime'); // 截止时间输入框
+            const exportFormat = document.getElementById('exportFormat'); // 导出格式选择器
+            const exportBtn = document.querySelector('.export-btn'); // 导出按钮
+            const exportProgress = document.getElementById('exportProgress'); // 导出进度显示
             
             // 全局变量
             let currentFilter = 'all'; // 当前筛选分类
@@ -596,6 +815,16 @@
                 const taskContent = taskItem.querySelector('.task-content').textContent;
                 const category = taskItem.dataset.category;
                 const priority = taskItem.dataset.priority;
+                const deadline = taskItem.dataset.deadline;
+                
+                // 格式化截止日期用于编辑
+                let deadlineDateStr = '';
+                let deadlineTimeStr = '';
+                if (deadline) {
+                    const deadlineDateObj = new Date(parseInt(deadline));
+                    deadlineDateStr = deadlineDateObj.toISOString().split('T')[0];
+                    deadlineTimeStr = deadlineDateObj.toTimeString().split(' ')[0].slice(0, 5);
+                }
                 
                 // 创建编辑模式的HTML结构
                 const editHTML = `
@@ -624,6 +853,11 @@
                                     <option value="中" ${priority === '中' ? 'selected' : ''}>中</option>
                                     <option value="高" ${priority === '高' ? 'selected' : ''}>高</option>
                                 </select>
+                            </div>
+                            <div class="option-group">
+                                <label for="editDeadlineDate">截止日期：</label>
+                                <input type="date" id="editDeadlineDate" class="deadline-input" value="${deadlineDateStr}">
+                                <input type="time" id="editDeadlineTime" class="deadline-input" value="${deadlineTimeStr}">
                             </div>
                         </div>
                         <div class="edit-buttons">
@@ -661,9 +895,22 @@
                 const newContent = editInput.value.trim();
                 const newCategory = taskItem.querySelector('#editCategory').value;
                 const newPriority = taskItem.querySelector('#editPriority').value;
+                const newDeadlineDate = taskItem.querySelector('#editDeadlineDate').value;
+                const newDeadlineTime = taskItem.querySelector('#editDeadlineTime').value;
                 
                 // 检查输入是否为空
                 if (newContent !== '') {
+                    // 处理截止日期
+                    let deadline = '';
+                    let deadlineDisplay = '';
+                    let isOverdue = false;
+                    if (newDeadlineDate && newDeadlineTime) {
+                        deadline = new Date(`${newDeadlineDate}T${newDeadlineTime}`).getTime().toString();
+                        const deadlineDateObj = new Date(parseInt(deadline));
+                        deadlineDisplay = deadlineDateObj.toLocaleString('zh-CN');
+                        isOverdue = parseInt(deadline) < Date.now();
+                    }
+                    
                     // 获取分类颜色
                     const categoryColor = getCategoryColor(newCategory);
                     // 获取优先级样式类名
@@ -679,6 +926,7 @@
                                 <div class="priority-indicator ${priorityClass}"></div>
                                 <div class="category-tag clickable" style="background-color: ${categoryColor}; cursor: pointer;" data-category="${newCategory}">${newCategory}</div>
                                 <div class="task-content" style="text-decoration: line-through; color: #9ca3af;">${newContent}</div>
+                                ${deadline ? `<span class="deadline-display ${isOverdue ? 'overdue' : ''}">截止：${deadlineDisplay}</span>` : ''}
                             </div>
                             <div class="task-buttons">
                                 <button type="button" class="edit-btn">编辑</button>
@@ -692,6 +940,7 @@
                                 <div class="priority-indicator ${priorityClass}"></div>
                                 <div class="category-tag clickable" style="background-color: ${categoryColor}; cursor: pointer;" data-category="${newCategory}">${newCategory}</div>
                                 <div class="task-content">${newContent}</div>
+                                ${deadline ? `<span class="deadline-display ${isOverdue ? 'overdue' : ''}">截止：${deadlineDisplay}</span>` : ''}
                             </div>
                             <div class="task-buttons">
                                 <button type="button" class="edit-btn">编辑</button>
@@ -707,6 +956,14 @@
                     // 更新任务数据属性
                     taskItem.dataset.category = newCategory;
                     taskItem.dataset.priority = newPriority;
+                    taskItem.dataset.deadline = deadline;
+                    
+                    // 更新过期状态
+                    if (isOverdue) {
+                        taskItem.classList.add('overdue');
+                    } else {
+                        taskItem.classList.remove('overdue');
+                    }
                     
                     // 重新添加事件监听器
                     addButtonListeners();
@@ -955,13 +1212,16 @@
                     const priority = item.dataset.priority;
                     // 获取任务创建时间
                     const createdAt = item.dataset.createdAt;
+                    // 获取任务截止日期
+                    const deadline = item.dataset.deadline;
                     // 将任务数据添加到数组
                     todoList.push({
                         content: content,
                         completed: completed,
                         category: category,
                         priority: priority,
-                        createdAt: createdAt
+                        createdAt: createdAt,
+                        deadline: deadline
                     });
                 });
                 
@@ -1013,6 +1273,19 @@
                     taskItem.dataset.category = task.category || '工作';
                     taskItem.dataset.priority = task.priority || '中';
                     taskItem.dataset.createdAt = task.createdAt || Date.now();
+                    taskItem.dataset.deadline = task.deadline || '';
+                    
+                    // 处理截止日期
+                    let deadlineDisplay = '';
+                    let isOverdue = false;
+                    if (task.deadline) {
+                        const deadlineDateObj = new Date(parseInt(task.deadline));
+                        deadlineDisplay = deadlineDateObj.toLocaleString('zh-CN');
+                        isOverdue = parseInt(task.deadline) < Date.now();
+                        if (isOverdue) {
+                            taskItem.classList.add('overdue');
+                        }
+                    }
                     
                     // 获取分类颜色和优先级样式
                     const categoryColor = getCategoryColor(task.category || '工作');
@@ -1026,6 +1299,7 @@
                                 <div class="priority-indicator ${priorityClass}"></div>
                                 <div class="category-tag clickable" style="background-color: ${categoryColor}; cursor: pointer;" data-category="${task.category || '工作'}">${task.category || '工作'}</div>
                                 <div class="task-content" style="text-decoration: line-through; color: #9ca3af;">${task.content}</div>
+                                ${task.deadline ? `<span class="deadline-display ${isOverdue ? 'overdue' : ''}">截止：${deadlineDisplay}</span>` : ''}
                             </div>
                             <div class="task-buttons">
                                 <button type="button" class="edit-btn">编辑</button>
@@ -1039,6 +1313,7 @@
                                 <div class="priority-indicator ${priorityClass}"></div>
                                 <div class="category-tag clickable" style="background-color: ${categoryColor}; cursor: pointer;" data-category="${task.category || '工作'}">${task.category || '工作'}</div>
                                 <div class="task-content">${task.content}</div>
+                                ${task.deadline ? `<span class="deadline-display ${isOverdue ? 'overdue' : ''}">截止：${deadlineDisplay}</span>` : ''}
                             </div>
                             <div class="task-buttons">
                                 <button type="button" class="edit-btn">编辑</button>
@@ -1111,8 +1386,88 @@
                 });
             }
             
+            // 检查任务是否即将到期并发送通知
+            function checkUpcomingDeadlines() {
+                const taskItems = document.querySelectorAll('.task-item');
+                const now = Date.now();
+                const oneDayInMs = 24 * 60 * 60 * 1000;
+                
+                taskItems.forEach(function(item) {
+                    const deadline = item.dataset.deadline;
+                    if (deadline) {
+                        const deadlineMs = parseInt(deadline);
+                        // 检查是否在24小时内到期且尚未通知
+                        if (deadlineMs > now && deadlineMs <= now + oneDayInMs && !item.dataset.notified) {
+                            const taskContent = item.querySelector('.task-content').textContent;
+                            // 显示通知
+                            if ('Notification' in window && Notification.permission === 'granted') {
+                                new Notification('任务即将到期', {
+                                    body: `${taskContent} 将在24小时内到期`,
+                                    icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij48cGF0aCBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOCA4LTggOHptMCAxYy00LjkwNSAwLTguODgtMy45NzQtOC44OC04Ljg3NCAwLTQuOTA1IDMuOTc0LTguODc0IDguODgtOC44NzQgNC45MDUgMCA4Ljg3NCAzLjk3NCA4Ljg3NCA4Ljg3NCAwIDQuOTA1LTMuOTY5IDguODc0LTguODc0IDguODc0eiIgZmlsbD0iIzMzMyIvPjwvc3ZnPg=='
+                                });
+                            } else if ('Notification' in window && Notification.permission !== 'denied') {
+                                // 请求通知权限
+                                Notification.requestPermission().then(function(permission) {
+                                    if (permission === 'granted') {
+                                        new Notification('任务即将到期', {
+                                            body: `${taskContent} 将在24小时内到期`,
+                                            icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij48cGF0aCBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOCA4LTggOHptMCAxYy00LjkwNSAwLTguODgtMy45NzQtOC44OC04Ljg3NCAwLTQuOTA1IDMuOTc0LTguODc0IDguODgtOC44NzQgNC45MDUgMCA4Ljg3NCAzLjk3NCA4Ljg3NCA4Ljg3NCAwIDQuOTA1LTMuOTY5IDguODc0LTguODc0IDguODc0eiIgZmlsbD0iIzMzMyIvPjwvc3ZnPg=='
+                                        });
+                                    }
+                                });
+                            }
+                            // 标记为已通知
+                            item.dataset.notified = 'true';
+                        }
+                    }
+                });
+            }
+            
+            // 更新过期任务状态
+            function updateOverdueStatus() {
+                const taskItems = document.querySelectorAll('.task-item');
+                const now = Date.now();
+                
+                taskItems.forEach(function(item) {
+                    const deadline = item.dataset.deadline;
+                    if (deadline) {
+                        const isOverdue = parseInt(deadline) < now;
+                        if (isOverdue) {
+                            item.classList.add('overdue');
+                            // 更新截止日期显示样式
+                            const deadlineDisplay = item.querySelector('.deadline-display');
+                            if (deadlineDisplay) {
+                                deadlineDisplay.classList.add('overdue');
+                            }
+                        } else {
+                            item.classList.remove('overdue');
+                            // 更新截止日期显示样式
+                            const deadlineDisplay = item.querySelector('.deadline-display');
+                            if (deadlineDisplay) {
+                                deadlineDisplay.classList.remove('overdue');
+                            }
+                        }
+                    }
+                });
+            }
+            
             // 初始化字符计数
             updateCharCount();
+            
+            // 初始化通知权限
+            if ('Notification' in window && Notification.permission !== 'denied') {
+                Notification.requestPermission();
+            }
+            
+            // 定期检查即将到期的任务（每小时检查一次）
+            setInterval(checkUpcomingDeadlines, 3600000);
+            
+            // 定期更新过期任务状态（每分钟检查一次）
+            setInterval(updateOverdueStatus, 60000);
+            
+            // 初始检查
+            checkUpcomingDeadlines();
+            updateOverdueStatus();
 
             // 为搜索输入框添加输入事件监听器
             searchInput.addEventListener('input', function() {
@@ -1135,7 +1490,432 @@
                     applyFilters();
                 });
             });
-
+            
+            // 拖拽排序功能实现
+            let draggedItem = null;
+            let placeholder = null;
+            
+            // 初始化拖拽功能
+            function initDragAndDrop() {
+                const taskItems = document.querySelectorAll('.task-item');
+                
+                taskItems.forEach(function(item) {
+                    // 添加拖拽事件监听器
+                    item.setAttribute('draggable', 'true');
+                    
+                    // 拖拽开始事件
+                    item.addEventListener('dragstart', function(e) {
+                        draggedItem = this;
+                        setTimeout(() => {
+                            this.classList.add('dragging');
+                        }, 0);
+                    });
+                    
+                    // 拖拽结束事件
+                    item.addEventListener('dragend', function(e) {
+                        this.classList.remove('dragging');
+                        if (placeholder) {
+                            placeholder.remove();
+                            placeholder = null;
+                        }
+                        // 保存拖拽后的顺序
+                        saveTodoList();
+                    });
+                    
+                    // 拖拽进入事件
+                    item.addEventListener('dragenter', function(e) {
+                        e.preventDefault();
+                        if (this !== draggedItem && !placeholder) {
+                            placeholder = document.createElement('div');
+                            placeholder.className = 'task-placeholder';
+                            this.parentNode.insertBefore(placeholder, this);
+                        }
+                    });
+                    
+                    // 拖拽离开事件
+                    item.addEventListener('dragleave', function(e) {
+                        e.preventDefault();
+                        if (placeholder && e.relatedTarget && !this.contains(e.relatedTarget)) {
+                            placeholder.remove();
+                            placeholder = null;
+                        }
+                    });
+                    
+                    // 拖拽经过事件
+                    item.addEventListener('dragover', function(e) {
+                        e.preventDefault();
+                        if (this !== draggedItem) {
+                            // 计算拖拽方向，决定占位符位置
+                            const rect = this.getBoundingClientRect();
+                            const y = e.clientY - rect.top;
+                            const midpoint = rect.height / 2;
+                            
+                            if (y < midpoint) {
+                                // 拖拽到上方，插入到当前元素之前
+                                if (placeholder && placeholder.nextSibling !== this) {
+                                    this.parentNode.insertBefore(placeholder, this);
+                                }
+                            } else {
+                                // 拖拽到下方，插入到当前元素之后
+                                if (placeholder && placeholder.previousSibling !== this) {
+                                    this.parentNode.insertBefore(placeholder, this.nextSibling);
+                                }
+                            }
+                        }
+                    });
+                    
+                    // 拖拽放下事件
+                    item.addEventListener('drop', function(e) {
+                        e.preventDefault();
+                        if (placeholder) {
+                            this.parentNode.insertBefore(draggedItem, placeholder);
+                            placeholder.remove();
+                            placeholder = null;
+                        }
+                    });
+                });
+                
+                // 为任务列表添加拖拽事件监听器
+                taskList.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                });
+                
+                taskList.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    if (placeholder && draggedItem) {
+                        this.appendChild(draggedItem);
+                        placeholder.remove();
+                        placeholder = null;
+                    }
+                });
+            }
+            
+            // 初始化拖拽功能
+            initDragAndDrop();
+            
+            // 数据导出功能
+            
+            // 将任务数据转换为导出格式
+            function getTaskDataForExport() {
+                const taskItems = document.querySelectorAll('.task-item');
+                const taskData = [];
+                
+                taskItems.forEach(function(item) {
+                    const content = item.querySelector('.task-content').textContent;
+                    const completed = item.classList.contains('completed');
+                    const category = item.dataset.category;
+                    const priority = item.dataset.priority;
+                    const createdAt = item.dataset.createdAt;
+                    const deadline = item.dataset.deadline;
+                    
+                    // 格式化日期
+                    const createdAtDate = new Date(parseInt(createdAt));
+                    const formattedCreatedAt = createdAtDate.toLocaleString('zh-CN');
+                    
+                    let formattedDeadline = '';
+                    if (deadline) {
+                        const deadlineDate = new Date(parseInt(deadline));
+                        formattedDeadline = deadlineDate.toLocaleString('zh-CN');
+                    }
+                    
+                    taskData.push({
+                        '任务标题': content,
+                        '分类': category,
+                        '优先级': priority,
+                        '完成状态': completed ? '已完成' : '未完成',
+                        '创建时间': formattedCreatedAt,
+                        '截止时间': formattedDeadline
+                    });
+                });
+                
+                return taskData;
+            }
+            
+            // 导出为CSV格式
+            function exportToCSV(taskData) {
+                if (taskData.length === 0) {
+                    alert('没有可导出的任务数据');
+                    return;
+                }
+                
+                // CSV标题
+                const headers = Object.keys(taskData[0]);
+                // CSV内容
+                const csvContent = [
+                    headers.join(','), // 标题行
+                    ...taskData.map(row => headers.map(fieldName => {
+                        // 处理包含逗号、引号和换行符的字段
+                        const fieldValue = row[fieldName] || '';
+                        return `"${fieldValue.toString().replace(/"/g, '""')}"`;
+                    }).join(','))
+                ].join('\n');
+                
+                // 创建Blob对象
+                const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                
+                // 创建下载链接
+                if (link.download !== undefined) {
+                    const url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', `任务列表_${new Date().toISOString().slice(0, 10)}.csv`);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            }
+            
+            // 导出为Excel格式
+            function exportToExcel(taskData) {
+                if (taskData.length === 0) {
+                    alert('没有可导出的任务数据');
+                    return;
+                }
+                
+                // 创建HTML表格
+                let html = '<table border="1">';
+                
+                // 添加表头
+                html += '<tr>';
+                const headers = Object.keys(taskData[0]);
+                headers.forEach(header => {
+                    html += `<th>${header}</th>`;
+                });
+                html += '</tr>';
+                
+                // 添加数据行
+                taskData.forEach(row => {
+                    html += '<tr>';
+                    headers.forEach(header => {
+                        const value = row[header] || '';
+                        html += `<td>${value}</td>`;
+                    });
+                    html += '</tr>';
+                });
+                
+                html += '</table>';
+                
+                // 创建Blob对象
+                const blob = new Blob(['\ufeff' + html], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+                const link = document.createElement('a');
+                
+                // 创建下载链接
+                if (link.download !== undefined) {
+                    const url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', `任务列表_${new Date().toISOString().slice(0, 10)}.xls`);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            }
+            
+            // 显示导出进度
+            function showExportProgress(message) {
+                exportProgress.textContent = message;
+                exportProgress.style.display = 'inline-block';
+            }
+            
+            // 隐藏导出进度
+            function hideExportProgress() {
+                exportProgress.style.display = 'none';
+            }
+            
+            // 导出任务数据
+            function exportTasks() {
+                const format = exportFormat.value;
+                
+                // 显示导出进度
+                showExportProgress('正在准备导出数据...');
+                
+                // 模拟异步导出过程
+                setTimeout(() => {
+                    // 获取任务数据
+                    const taskData = getTaskDataForExport();
+                    
+                    // 根据选择的格式导出
+                    if (format === 'csv') {
+                        showExportProgress('正在导出CSV文件...');
+                        setTimeout(() => {
+                            exportToCSV(taskData);
+                            hideExportProgress();
+                            // 显示完成通知
+                            if ('Notification' in window && Notification.permission === 'granted') {
+                                new Notification('导出完成', {
+                                    body: '任务列表已成功导出为CSV格式',
+                                    icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij48cGF0aCBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOCA4LTggOHptMCAxYy00LjkwNSAwLTguODgtMy45NzQtOC44OC04Ljg3NCAwLTQuOTA1IDMuOTc0LTguODc0IDguODgtOC44NzQgNC45MDUgMCA4Ljg3NCAzLjk3NCA4Ljg3NCA4Ljg3NCAwIDQuOTA1LTMuOTY5IDguODc0LTguODc0IDguODc0eiIgZmlsbD0iIzMzMyIvPjwvc3ZnPg=='
+                                });
+                            } else {
+                                alert('任务列表已成功导出为CSV格式');
+                            }
+                        }, 500);
+                    } else if (format === 'excel') {
+                        showExportProgress('正在导出Excel文件...');
+                        setTimeout(() => {
+                            exportToExcel(taskData);
+                            hideExportProgress();
+                            // 显示完成通知
+                            if ('Notification' in window && Notification.permission === 'granted') {
+                                new Notification('导出完成', {
+                                    body: '任务列表已成功导出为Excel格式',
+                                    icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij48cGF0aCBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOCA4LTggOHptMCAxYy00LjkwNSAwLTguODgtMy45NzQtOC44OC04Ljg3NCAwLTQuOTA1IDMuOTc0LTguODc0IDguODgtOC44NzQgNC45MDUgMCA4Ljg3NCAzLjk3NCA4Ljg3NCA4Ljg3NCAwIDQuOTA1LTMuOTY5IDguODc0LTguODc0IDguODc0eiIgZmlsbD0iIzMzMyIvPjwvc3ZnPg=='
+                                });
+                            } else {
+                                alert('任务列表已成功导出为Excel格式');
+                            }
+                        }, 500);
+                    }
+                }, 500);
+            }
+            
+            // 为导出按钮添加点击事件监听器
+            exportBtn.addEventListener('click', exportTasks);
+            
+            // 更新addButtonListeners函数，在添加新任务后重新初始化拖拽功能
+            const originalAddButtonListeners = addButtonListeners;
+            addButtonListeners = function() {
+                originalAddButtonListeners();
+                initDragAndDrop();
+                // 更新统计数据
+                updateWeeklyStats();
+            };
+            
+            // 简单统计功能
+            
+            // 获取本周的开始和结束时间
+            function getThisWeekRange() {
+                const now = new Date();
+                const dayOfWeek = now.getDay(); // 0是周日，1-6是周一到周六
+                
+                // 计算本周一的日期
+                const monday = new Date(now);
+                monday.setDate(now.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+                monday.setHours(0, 0, 0, 0);
+                
+                // 计算本周日的日期
+                const sunday = new Date(monday);
+                sunday.setDate(monday.getDate() + 6);
+                sunday.setHours(23, 59, 59, 999);
+                
+                return {
+                    start: monday.getTime(),
+                    end: sunday.getTime()
+                };
+            }
+            
+            // 更新本周统计数据
+            function updateWeeklyStats() {
+                const taskItems = document.querySelectorAll('.task-item');
+                const weekRange = getThisWeekRange();
+                
+                let weeklyCreated = 0;
+                let weeklyCompleted = 0;
+                
+                // 统计本周创建和完成的任务
+                taskItems.forEach(function(item) {
+                    const createdAt = parseInt(item.dataset.createdAt);
+                    const completed = item.classList.contains('completed');
+                    
+                    // 统计本周创建的任务
+                    if (createdAt >= weekRange.start && createdAt <= weekRange.end) {
+                        weeklyCreated++;
+                        
+                        // 统计本周完成的任务
+                        if (completed) {
+                            weeklyCompleted++;
+                        }
+                    }
+                });
+                
+                // 计算完成率
+                const completionRate = weeklyCreated > 0 ? Math.round((weeklyCompleted / weeklyCreated) * 100) : 0;
+                
+                // 更新DOM显示
+                document.getElementById('weeklyCreated').textContent = weeklyCreated;
+                document.getElementById('weeklyCompleted').textContent = weeklyCompleted;
+                document.getElementById('completionRate').textContent = `${completionRate}%`;
+                
+                // 绘制周统计图表
+                drawWeeklyChart(weeklyCreated, weeklyCompleted, completionRate);
+            }
+            
+            // 绘制周统计图表
+            function drawWeeklyChart(created, completed, rate) {
+                const canvas = document.getElementById('weeklyChart');
+                const ctx = canvas.getContext('2d');
+                
+                // 清空画布
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // 计算尺寸
+                const width = canvas.width;
+                const height = canvas.height;
+                const centerX = width / 2;
+                const centerY = height / 2;
+                const radius = Math.min(width, height) / 3;
+                
+                // 绘制背景圆
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#f1f5f9';
+                ctx.fill();
+                
+                // 绘制完成率扇形
+                const endAngle = (rate / 100) * Math.PI * 2 - Math.PI / 2;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, -Math.PI / 2, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = '#3b82f6';
+                ctx.fill();
+                
+                // 绘制中心圆
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius * 0.7, 0, Math.PI * 2);
+                ctx.fillStyle = 'white';
+                ctx.fill();
+                ctx.strokeStyle = '#e2e8f0';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // 绘制完成率文字
+                ctx.font = 'bold 36px Arial';
+                ctx.fillStyle = '#333';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(`${rate}%`, centerX, centerY);
+                
+                // 绘制图例
+                const legendX = centerX;
+                const legendY = centerY + radius + 20;
+                
+                // 创建任务数
+                ctx.font = '14px Arial';
+                ctx.fillStyle = '#6b7280';
+                ctx.fillText(`创建: ${created} | 完成: ${completed}`, legendX, legendY);
+            }
+            
+            // 初始化统计数据
+            updateWeeklyStats();
+            
+            // 在handleClearCompleted函数中添加统计更新
+            const originalHandleClearCompleted = handleClearCompleted;
+            handleClearCompleted = function() {
+                originalHandleClearCompleted.apply(this, arguments);
+                // 更新统计数据
+                updateWeeklyStats();
+            };
+            
+            // 在handleDelete函数中添加统计更新
+            const originalHandleDelete = handleDelete;
+            handleDelete = function() {
+                originalHandleDelete.apply(this, arguments);
+                // 更新统计数据
+                updateWeeklyStats();
+            };
+            
             // 为添加按钮添加点击事件监听器
             addBtn.addEventListener('click', function() {
                 // 获取输入框的值，并去除首尾空格
@@ -1154,6 +1934,19 @@
                     // 获取优先级样式类名
                     const priorityClass = getPriorityClass(priority);
                     
+                    // 处理截止日期
+                    const deadlineDate = document.getElementById('deadlineDate').value;
+                    const deadlineTime = document.getElementById('deadlineTime').value;
+                    let deadline = '';
+                    let deadlineDisplay = '';
+                    let isOverdue = false;
+                    if (deadlineDate && deadlineTime) {
+                        deadline = new Date(`${deadlineDate}T${deadlineTime}`).getTime().toString();
+                        const deadlineDateObj = new Date(parseInt(deadline));
+                        deadlineDisplay = deadlineDateObj.toLocaleString('zh-CN');
+                        isOverdue = parseInt(deadline) < Date.now();
+                    }
+                    
                     // 创建新的任务项元素
                     const taskItem = document.createElement('div');
                     taskItem.className = 'task-item';
@@ -1161,6 +1954,12 @@
                     taskItem.dataset.category = category;
                     taskItem.dataset.priority = priority;
                     taskItem.dataset.createdAt = createdAt;
+                    taskItem.dataset.deadline = deadline;
+                    
+                    // 如果任务已过期，添加过期样式
+                    if (isOverdue) {
+                        taskItem.classList.add('overdue');
+                    }
 
                     // 设置任务项的HTML内容
                     taskItem.innerHTML = `
@@ -1168,8 +1967,10 @@
                             <div class="priority-indicator ${priorityClass}"></div>
                             <div class="category-tag clickable" style="background-color: ${categoryColor}; cursor: pointer;" data-category="${category}">${category}</div>
                             <div class="task-content">${taskText}</div>
+                            ${deadline ? `<span class="deadline-display ${isOverdue ? 'overdue' : ''}">截止：${deadlineDisplay}</span>` : ''}
                         </div>
                         <div class="task-buttons">
+                            <button type="button" class="edit-btn">编辑</button>
                             <button type="button" class="complete-btn">完成</button>
                             <button type="button" class="delete-btn">删除</button>
                         </div>
@@ -1190,15 +1991,20 @@
                     // 清空输入框
                     taskInput.value = '';
                     
-                    // 重置分类和优先级选择
+                    // 重置分类、优先级和截止日期选择
                     categorySelect.value = '工作';
                     prioritySelect.value = '中';
+                    document.getElementById('deadlineDate').value = '';
+                    document.getElementById('deadlineTime').value = '';
                     
                     // 更新字符计数
                     updateCharCount();
                     
                     // 保存任务列表到localStorage
                     saveTodoList();
+                    
+                    // 更新统计数据
+                    updateWeeklyStats();
                 }
             });
         });
